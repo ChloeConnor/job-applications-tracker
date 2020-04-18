@@ -3,7 +3,8 @@ import * as React from 'react';
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import ApplicationsScreen from '../screens/ApplicationsScreen';
+import AddApplicationScreen from '../screens/AddApplicationScreen';
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';
@@ -25,11 +26,19 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
       <BottomTab.Screen
-        name="Links"
-        component={LinksScreen}
+        name="Applications"
+        component={ApplicationsScreen}
         options={{
-          title: 'Resources',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
+          title: 'Applications',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-rocket" />,
+        }}
+      />
+      <BottomTab.Screen
+        name="Add Application"
+        component={AddApplicationScreen}
+        options={{
+          title: 'Add Application',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-add-circle" />,
         }}
       />
     </BottomTab.Navigator>
@@ -42,7 +51,9 @@ function getHeaderTitle(route) {
   switch (routeName) {
     case 'Home':
       return 'Home';
-    case 'Links':
-      return 'Links to learn more';
+    case 'Applications':
+      return 'My applications';
+    case 'Add Application':
+      return 'Add new application'  
   }
 }

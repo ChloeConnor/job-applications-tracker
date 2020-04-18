@@ -27,41 +27,35 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.helpContainer}>
+          <Text style={styles.stepsHeader}>Track your job applications!</Text>
+        </View>
+        <Text> </Text>
+        <Text> </Text>
+        <View style={styles.helpContainer}>
           <Text style={styles.stepsHeader}>Steps:</Text>
         </View>
 
         <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>
-            1. Answer some basic questions
+            1. Add roles you've applied for
           </Text>
           <Text style={styles.getStartedText}>
-            2. Record your video answers
+            2. Input details about the role
           </Text>
           <Text style={styles.getStartedText}>
-            3. Get requests from companies to view your videos
+            3. Keep track of applications and interviews
           </Text>
         </View>
 
+        <Text> </Text>
+        <Text> </Text>
+        <Text> </Text>
         <View style={styles.helpContainer}>
           <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
             <Text style={styles.helpLinkText}>Go to website</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}
-        >
-          <MonoText style={styles.codeHighlightText}>
-            navigation/BottomTabNavigator.js
-          </MonoText>
-        </View>
-      </View>
     </View>
   );
 }
