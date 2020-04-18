@@ -8,6 +8,7 @@ import Colors from "../constants/Colors";
 
 function applicationCards(applications) {
   return Object.entries(applications).map(([key, value]) => {
+    console.log(value);
     const app = Object.entries(JSON.parse(value[1]));
 
     const company = app.filter(([key, value]) => key == "company")[0][1];
@@ -38,12 +39,17 @@ export default function ApplicationsScreen() {
   const [keys, setKeys] = useState([]);
   const [applications, setApplications] = useState({});
 
-  useEffect(() => {
+  function getApplications() {
     AsyncStorage.getAllKeys().then((key) => setKeys(key));
     AsyncStorage.multiGet(keys).then((job) => setApplications(job));
+  }
+
+  useEffect(() => {
+    getApplications();
   }, []);
 
   function check() {
+    getApplications();
     console.log(applications);
   }
 
