@@ -5,6 +5,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import ApplicationsScreen from '../screens/ApplicationsScreen';
 import AddApplicationScreen from '../screens/AddApplicationScreen';
+import { Ionicons } from "@expo/vector-icons";
 
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = 'Home';

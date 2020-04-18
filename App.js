@@ -11,9 +11,9 @@ import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import useLinking from "./navigation/useLinking";
+import Colors from "./constants/Colors";
 
 const Stack = createStackNavigator();
 
@@ -34,7 +34,7 @@ export default function App(props) {
 
         // Load fonts
         await Font.loadAsync({
-          ...Ionicons.font,
+          Ionicons: Ionicons,
           "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         });
       } catch (e) {
@@ -71,6 +71,6 @@ export default function App(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fe6b01",
+    backgroundColor: Colors.orange,
   },
 });

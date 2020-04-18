@@ -4,7 +4,8 @@ import * as React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
-import {AsyncStorage} from 'react-native';
+import { AsyncStorage } from "react-native";
+import Colors from "../constants/Colors";
 
 export default function ApplicationsScreen() {
   return (
@@ -12,11 +13,19 @@ export default function ApplicationsScreen() {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <Card containerStyle={styles.card} titleStyle={styles.cardTitle} title="Google">
+      <Card
+        containerStyle={styles.card}
+        titleStyle={styles.cardTitle}
+        title="Google"
+      >
         <Text style={styles.optionText}> Software Developer</Text>
         <Text style={styles.optionText}> £80k</Text>
       </Card>
-      <Card containerStyle={styles.card} titleStyle={styles.cardTitle} title="Facebook">
+      <Card
+        containerStyle={styles.card}
+        titleStyle={styles.cardTitle}
+        title="Facebook"
+      >
         <Text style={styles.optionText}> Software Engineer</Text>
         <Text style={styles.optionText}> £75k</Text>
       </Card>
@@ -50,12 +59,12 @@ const styles = StyleSheet.create({
     fontSize: 15,
     alignSelf: "flex-start",
     marginTop: 1,
-    color: 'white'
+    color: "white",
   },
   card: {
-    backgroundColor: "#fe6b01"
+    backgroundColor: Colors.orange,
   },
   cardTitle: {
-    color: "white"
-  }
+    color: "white",
+  },
 });
