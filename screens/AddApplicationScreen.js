@@ -1,10 +1,17 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  Picker,
+} from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
+import { AsyncStorage } from "react-native";
 
-const Status = {
+const statusDict = {
   applied: "Applied",
   phoneInterview: "Phone interview",
   second_interview: "Second Interview",
@@ -22,6 +29,10 @@ const FormWithSubmit = () => {
     console.log(formValues);
   }
 
+  const statusOptions = Object.entries(statusDict).map(([key, value]) => (
+    <Picker.Item label={value} value={key} />
+  ));
+
   return (
     <ScrollView
       style={styles.container}
@@ -29,27 +40,40 @@ const FormWithSubmit = () => {
     >
       <View style={styles.container}>
         <TextInput
-          onChangeText={(value) =>
-            setFormValues({ company: value, ...formValues })
-          }
+          style={styles.textInput}
+          onChangeText={(event) => {
+            setFormValues({ ...formValues, company: event });
+          }}
         >
           Company
         </TextInput>
         <TextInput
-          onChangeText={(value) =>
-            setFormValues({ role: value, ...formValues })
-          }
+          style={styles.textInput}
+          onChangeText={(event) => {
+            setFormValues({ ...formValues, role: event });
+          }}
         >
           Role
         </TextInput>
         <TextInput
-          onChangeText={(value) => {
-            console.log(value)
-            setFormValues({ salary: value, ...formValues })
+          style={styles.textInput}
+          onChangeText={(event) => {
+            setFormValues({ ...formValues, salary: event });
           }}
         >
           Salary
         </TextInput>
+        <Picker
+          style={styles.container}
+          selectedValue={formValues.status}
+          onValueChange={(itemValue, itemPosition) => {
+            setFormValues({ ...formValues, status: itemValue });
+          }}
+        >
+          {statusOptions}
+        </Picker>
+        <Text></Text>
+        <Text></Text>
         <TouchableHighlight
           style={styles.button}
           onPress={onSubmit}
@@ -58,7 +82,6 @@ const FormWithSubmit = () => {
           <Text style={styles.buttonText}>Save</Text>
         </TouchableHighlight>
       </View>
-      <View></View>
       <Text></Text>
     </ScrollView>
   );
@@ -78,7 +101,19 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 15,
   },
+  textInput: {
+    flex: 1,
+    borderBottomWidth: 1,
+    borderRightWidth: 1,
+    borderTopWidth: 1,
+    borderLeftWidth: 1,
+    marginRight: 10,
+    marginLeft: 10,
+    height: 40,
+    padding: 5,
+  },
   button: {
+    flex: 1,
     alignItems: "center",
     backgroundColor: Colors.orange,
     padding: 15,
