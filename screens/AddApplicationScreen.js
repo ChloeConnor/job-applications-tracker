@@ -5,6 +5,7 @@ import {
   View,
   TouchableHighlight,
   Picker,
+  Alert,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
@@ -22,35 +23,19 @@ const statusDict = {
   cancelled: "Cancelled",
 };
 
+const statusOptions = Object.entries(statusDict).map(([key, value]) => (
+  <Picker.Item label={value} value={key} key={key} />
+));
+
 const FormWithSubmit = () => {
   const [formValues, setFormValues] = useState({});
-  const [keys, setKeys] = useState([]);
-  const [applications, setApplications] = useState();
-
-  function getApplications() {
-    AsyncStorage.getAllKeys().then((key) => setKeys(key));
-    AsyncStorage.multiGet(keys).then((job) => setApplications(job));
-  }
+  const [jobID, setJobID] = useState("");
 
   function onSubmit() {
-    AsyncStorage.setItem("ID1", JSON.stringify(formValues));
+    AsyncStorage.setItem(jobID, JSON.stringify(formValues)).then(
+      Alert.alert("Added!")
+    );
   }
-
-  function check() {
-    getApplications();
-
-    Object.entries(applications).forEach(([key, value]) => {
-  
-      const app = Object.entries(JSON.parse(value[1]));
-
-      const company = app.filter(([key, value]) => key == "company")
-      console.log(company[0][1]);
-    });
-  }
-
-  const statusOptions = Object.entries(statusDict).map(([key, value]) => (
-    <Picker.Item label={value} value={key} key={key} />
-  ));
 
   return (
     <ScrollView
@@ -60,24 +45,26 @@ const FormWithSubmit = () => {
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
-          onChangeText={(event) => {
-            setFormValues({ ...formValues, company: event });
+          onChangeText={(value) => {
+            setFormValues({ ...formValues, company: value });
+            const id = value.toLowerCase().replace(" ", "");
+            setJobID(id);
           }}
         >
           Company
         </TextInput>
         <TextInput
           style={styles.textInput}
-          onChangeText={(event) => {
-            setFormValues({ ...formValues, role: event });
+          onChangeText={(value) => {
+            setFormValues({ ...formValues, role: value });
           }}
         >
           Role
         </TextInput>
         <TextInput
           style={styles.textInput}
-          onChangeText={(event) => {
-            setFormValues({ ...formValues, salary: event });
+          onChangeText={(value) => {
+            setFormValues({ ...formValues, salary: value });
           }}
         >
           Salary
@@ -99,14 +86,6 @@ const FormWithSubmit = () => {
           underlayColor="#99d9f4"
         >
           <Text style={styles.buttonText}>Save</Text>
-        </TouchableHighlight>
-
-        <TouchableHighlight
-          style={styles.button}
-          onPress={check}
-          underlayColor="#99d9f4"
-        >
-          <Text style={styles.buttonText}>Check</Text>
         </TouchableHighlight>
       </View>
       <Text></Text>

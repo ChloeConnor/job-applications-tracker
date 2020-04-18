@@ -1,8 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
-import { Card, ListItem, Button, Icon } from "react-native-elements";
+import { Card, ListItem, Icon } from "react-native-elements";
 import { AsyncStorage } from "react-native";
 import Colors from "../constants/Colors";
 
@@ -22,6 +22,13 @@ function applicationCards(applications) {
       >
         <Text style={styles.optionText}>{role}</Text>
         <Text style={styles.optionText}>{salary}</Text>
+        <TouchableHighlight
+          style={styles.button}
+          onPress={() => console.log("delete")}
+          underlayColor="#99d9f4"
+        >
+          <Text style={styles.buttonText}>Delete</Text>
+        </TouchableHighlight>
       </Card>
     );
   });
@@ -31,13 +38,12 @@ export default function ApplicationsScreen() {
   const [keys, setKeys] = useState([]);
   const [applications, setApplications] = useState({});
 
-  function getApplications() {
+  useEffect(() => {
     AsyncStorage.getAllKeys().then((key) => setKeys(key));
     AsyncStorage.multiGet(keys).then((job) => setApplications(job));
-  }
+  }, []);
 
-  function update() {
-    getApplications();
+  function check() {
     console.log(applications);
   }
 
@@ -50,10 +56,10 @@ export default function ApplicationsScreen() {
       <Text></Text>
       <TouchableHighlight
         style={styles.button}
-        onPress={update}
+        onPress={check}
         underlayColor="#99d9f4"
       >
-        <Text style={styles.buttonText}>Update</Text>
+        <Text style={styles.buttonText}>CHECK</Text>
       </TouchableHighlight>
     </ScrollView>
   );
