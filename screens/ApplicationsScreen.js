@@ -1,34 +1,60 @@
 import { Ionicons } from "@expo/vector-icons";
-import * as WebBrowser from "expo-web-browser";
-import * as React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
 import { Card, ListItem, Button, Icon } from "react-native-elements";
 import { AsyncStorage } from "react-native";
 import Colors from "../constants/Colors";
 
+function applicationCards(applications) {
+  return Object.entries(applications).map(([key, value]) => {
+    const app = Object.entries(JSON.parse(value[1]));
+
+    const company = app.filter(([key, value]) => key == "company")[0][1];
+    const role = app.filter(([key, value]) => key == "role")[0][1];
+    const salary = app.filter(([key, value]) => key == "salary")[0][1];
+
+    return (
+      <Card
+        containerStyle={styles.card}
+        titleStyle={styles.cardTitle}
+        title={company}
+      >
+        <Text style={styles.optionText}>{role}</Text>
+        <Text style={styles.optionText}>{salary}</Text>
+      </Card>
+    );
+  });
+}
+
 export default function ApplicationsScreen() {
+  const [keys, setKeys] = useState([]);
+  const [applications, setApplications] = useState({});
+
+  function getApplications() {
+    AsyncStorage.getAllKeys().then((key) => setKeys(key));
+    AsyncStorage.multiGet(keys).then((job) => setApplications(job));
+  }
+
+  function update() {
+    getApplications();
+    console.log(applications);
+  }
+
   return (
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      <Card
-        containerStyle={styles.card}
-        titleStyle={styles.cardTitle}
-        title="Google"
+      {applicationCards(applications)}
+      <Text></Text>
+      <TouchableHighlight
+        style={styles.button}
+        onPress={update}
+        underlayColor="#99d9f4"
       >
-        <Text style={styles.optionText}> Software Developer</Text>
-        <Text style={styles.optionText}> £80k</Text>
-      </Card>
-      <Card
-        containerStyle={styles.card}
-        titleStyle={styles.cardTitle}
-        title="Facebook"
-      >
-        <Text style={styles.optionText}> Software Engineer</Text>
-        <Text style={styles.optionText}> £75k</Text>
-      </Card>
+        <Text style={styles.buttonText}>Update</Text>
+      </TouchableHighlight>
     </ScrollView>
   );
 }
@@ -66,5 +92,13 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: "white",
+  },
+  button: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: Colors.orange,
+    padding: 15,
+    marginRight: 100,
+    marginLeft: 100,
   },
 });

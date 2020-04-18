@@ -24,13 +24,32 @@ const statusDict = {
 
 const FormWithSubmit = () => {
   const [formValues, setFormValues] = useState({});
+  const [keys, setKeys] = useState([]);
+  const [applications, setApplications] = useState();
+
+  function getApplications() {
+    AsyncStorage.getAllKeys().then((key) => setKeys(key));
+    AsyncStorage.multiGet(keys).then((job) => setApplications(job));
+  }
 
   function onSubmit() {
-    console.log(formValues);
+    AsyncStorage.setItem("ID1", JSON.stringify(formValues));
+  }
+
+  function check() {
+    getApplications();
+
+    Object.entries(applications).forEach(([key, value]) => {
+  
+      const app = Object.entries(JSON.parse(value[1]));
+
+      const company = app.filter(([key, value]) => key == "company")
+      console.log(company[0][1]);
+    });
   }
 
   const statusOptions = Object.entries(statusDict).map(([key, value]) => (
-    <Picker.Item label={value} value={key} />
+    <Picker.Item label={value} value={key} key={key} />
   ));
 
   return (
@@ -80,6 +99,14 @@ const FormWithSubmit = () => {
           underlayColor="#99d9f4"
         >
           <Text style={styles.buttonText}>Save</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          style={styles.button}
+          onPress={check}
+          underlayColor="#99d9f4"
+        >
+          <Text style={styles.buttonText}>Check</Text>
         </TouchableHighlight>
       </View>
       <Text></Text>
