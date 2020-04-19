@@ -79,6 +79,7 @@ const FormWithSubmit = () => {
             setFormValues({ ...formValues, status: itemValue });
           }}
         >
+          <Picker.Item key={"Stage"} label={"Stage"} value={0} />
           {statusOptions}
         </Picker>
         <Text></Text>

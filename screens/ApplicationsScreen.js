@@ -23,6 +23,7 @@ function applicationCards(applications) {
       const company = app.filter(([key, value]) => key == "company")[0][1];
       const role = app.filter(([key, value]) => key == "role")[0][1];
       const salary = app.filter(([key, value]) => key == "salary")[0][1];
+      const stage = app.filter(([key, value]) => key == "status")[0][1];
 
       return (
         <Card
@@ -30,6 +31,7 @@ function applicationCards(applications) {
           titleStyle={styles.cardTitle}
           title={company}
         >
+          <Text style={styles.optionText}>{stage}</Text>
           <Text style={styles.optionText}>{role}</Text>
           <Text style={styles.optionText}>{salary}</Text>
           <TouchableHighlight
