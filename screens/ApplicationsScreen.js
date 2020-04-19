@@ -6,10 +6,17 @@ import { Card, ListItem, Icon } from "react-native-elements";
 import { AsyncStorage } from "react-native";
 import Colors from "../constants/Colors";
 
+function deleteApplication(jobID) {
+  console.log("delete")
+  console.log(jobID)
+  // AsyncStorage.removeItem(jobID);
+}
+
 function applicationCards(applications) {
   return Object.entries(applications).map(([key, value]) => {
     console.log(value);
     const app = Object.entries(JSON.parse(value[1]));
+    const id = value[0];
 
     const company = app.filter(([key, value]) => key == "company")[0][1];
     const role = app.filter(([key, value]) => key == "role")[0][1];
@@ -25,7 +32,7 @@ function applicationCards(applications) {
         <Text style={styles.optionText}>{salary}</Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => console.log("delete")}
+          onPress={deleteApplication(id)}
           underlayColor="#99d9f4"
         >
           <Text style={styles.buttonText}>Delete</Text>
@@ -46,7 +53,7 @@ export default function ApplicationsScreen() {
 
   useEffect(() => {
     getApplications();
-  }, []);
+  }, [keys]);
 
   function check() {
     getApplications();

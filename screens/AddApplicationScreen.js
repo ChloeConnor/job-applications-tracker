@@ -32,8 +32,12 @@ const FormWithSubmit = () => {
   const [jobID, setJobID] = useState("");
 
   function onSubmit() {
-    AsyncStorage.setItem(jobID, JSON.stringify(formValues));
-    Alert.alert("Added!")
+    if (jobID != undefined && jobID != "") {
+      AsyncStorage.setItem(jobID, JSON.stringify(formValues));
+      Alert.alert("Added!");
+    } else {
+      Alert.alert("Invalid form");
+    }
   }
 
   return (
