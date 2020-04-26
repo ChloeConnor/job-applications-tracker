@@ -12,18 +12,28 @@ function deleteApplication(jobID) {
   AsyncStorage.removeItem(jobID);
 }
 
+function getValue(application, field) {
+  return (application.filter(([key, value]) => key == field)[0] || [
+    field,
+    "Unknown",
+  ])[1]
+}
+
 function applicationCards(applications) {
-  
   if (applications != undefined && applications.length) {
     return Object.entries(applications).map(([key, value]) => {
-      console.log(value);
       const app = Object.entries(JSON.parse(value[1]));
       const jobID = value[0];
 
       const company = app.filter(([key, value]) => key == "company")[0][1];
-      const role = app.filter(([key, value]) => key == "role")[0][1];
-      const salary = app.filter(([key, value]) => key == "salary")[0][1];
-      const stage = app.filter(([key, value]) => key == "status")[0][1];
+      const role = getValue(app, "role");
+      const salary = getValue(app, "salary");
+      const stage = getValue(app, "stage");
+      const interestLevel = getValue(app, "interest_level");
+      const appliedVia = getValue(app, "applied_via");
+      const companySize = getValue(app, "company_size");
+
+      console.log(app.filter(([key, value]) => key == "salary"));
 
       return (
         <Card
@@ -31,9 +41,12 @@ function applicationCards(applications) {
           titleStyle={styles.cardTitle}
           title={company}
         >
-          <Text style={styles.optionText}>{stage}</Text>
-          <Text style={styles.optionText}>{role}</Text>
-          <Text style={styles.optionText}>{salary}</Text>
+          <Text style={styles.optionText}>Stage: {stage}</Text>
+          <Text style={styles.optionText}>Role: {role}</Text>
+          <Text style={styles.optionText}>Salary: {salary}</Text>
+          <Text style={styles.optionText}>Applied Via: {appliedVia}</Text>
+          <Text style={styles.optionText}>Company size: {companySize}</Text>
+          <Text style={styles.optionText}>Interest level: {interestLevel}</Text>
           <TouchableHighlight
             style={styles.button}
             onPress={() => deleteApplication(jobID)}
