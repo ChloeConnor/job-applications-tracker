@@ -11,6 +11,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
+import Slider from '@react-native-community/slider';
 
 const statusDict = {
   applied: "Applied",
@@ -82,6 +83,22 @@ const FormWithSubmit = () => {
           <Picker.Item key={"Stage"} label={"Stage"} value={0} />
           {statusOptions}
         </Picker>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(value) => {
+            setFormValues({ ...formValues, company_size: value });
+          }}
+        >
+          Company size
+        </TextInput>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(value) => {
+            setFormValues({ ...formValues, applied_via: value });
+          }}
+        >
+          Applied via
+        </TextInput>
         <Text></Text>
         <Text></Text>
         <TouchableHighlight
