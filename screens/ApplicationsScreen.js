@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import { RectButton, ScrollView } from "react-native-gesture-handler";
-import { Card, ListItem, Icon } from "react-native-elements";
+import { Card } from "react-native-elements";
 import { AsyncStorage } from "react-native";
 import Colors from "../constants/Colors";
 

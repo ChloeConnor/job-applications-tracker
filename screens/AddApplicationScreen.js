@@ -6,12 +6,12 @@ import {
   TouchableHighlight,
   Picker,
   Alert,
+  Slider,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
-import Slider from '@react-native-community/slider';
 
 const statusDict = {
   applied: "Applied",
@@ -31,6 +31,7 @@ const statusOptions = Object.entries(statusDict).map(([key, value]) => (
 const FormWithSubmit = () => {
   const [formValues, setFormValues] = useState({});
   const [jobID, setJobID] = useState("");
+  const [interestLevel, setInterestLevel] = useState(0);
 
   function onSubmit() {
     if (jobID != undefined && jobID != "") {
@@ -100,6 +101,20 @@ const FormWithSubmit = () => {
           Applied via
         </TextInput>
         <Text></Text>
+        <Text style={styles.text}>Interest level: {interestLevel}</Text>
+        <Slider
+          style={{ width: 200, height: 40 }}
+          minimumValue={0}
+          maximumValue={10}
+          minimumTrackTintColor={Colors.orange}
+          maximumTrackTintColor={Colors.grey}
+          onValueChange={(value) => {
+            setFormValues({ ...formValues, interest_level: value });
+            setInterestLevel(value);
+          }}
+          step={1}
+        />
+        <Text></Text>
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
@@ -134,6 +149,13 @@ const styles = StyleSheet.create({
     borderRightWidth: 1,
     borderTopWidth: 1,
     borderLeftWidth: 1,
+    marginRight: 10,
+    marginLeft: 10,
+    height: 40,
+    padding: 5,
+  },
+  text: {
+    flex: 1,
     marginRight: 10,
     marginLeft: 10,
     height: 40,
