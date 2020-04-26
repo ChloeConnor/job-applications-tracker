@@ -50,7 +50,7 @@ function applicationCards(applications) {
           <TouchableHighlight
             style={styles.button}
             onPress={() => deleteApplication(jobID)}
-            underlayColor="#99d9f4"
+            underlayColor="#dbdbdb"
           >
             <Text style={styles.buttonText}>Delete</Text>
           </TouchableHighlight>
@@ -89,7 +89,7 @@ export default function ApplicationsScreen() {
       <TouchableHighlight
         style={styles.button}
         onPress={check}
-        underlayColor="#99d9f4"
+        underlayColor="#dbdbdb"
       >
         <Text style={styles.buttonText}>CHECK</Text>
       </TouchableHighlight>

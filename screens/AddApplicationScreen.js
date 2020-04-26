@@ -119,7 +119,7 @@ const FormWithSubmit = () => {
         <TouchableHighlight
           style={styles.button}
           onPress={onSubmit}
-          underlayColor="#99d9f4"
+          underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>
         </TouchableHighlight>
