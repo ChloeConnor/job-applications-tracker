@@ -12,6 +12,11 @@ function deleteApplication(jobID) {
   AsyncStorage.removeItem(jobID);
 }
 
+function moreDetails(applicationInfo) {
+  //go to new page
+  console.log("more details")
+}
+
 function getValue(application, field) {
   return (application.filter(([key, value]) => key == field)[0] || [
     field,
@@ -19,18 +24,33 @@ function getValue(application, field) {
   ])[1]
 }
 
-function Delete() {
-  return (<TouchableHighlight
-  style={styles.button}
-  onPress={() => deleteApplication(jobID)}
-  underlayColor="#dbdbdb"
->
-  <Text style={styles.buttonText}>Delete</Text>
-</TouchableHighlight>)
+function Delete(jobID) {
+  return (
+    <TouchableHighlight
+      style={styles.button}
+      onPress={() => deleteApplication(jobID)}
+      underlayColor="#dbdbdb"
+  >
+    <Text style={styles.buttonText}>Delete</Text>
+  </TouchableHighlight>
+  )
+
+}
+
+function Details(jobID) {
+  return (
+    <TouchableHighlight
+      style={styles.button}
+      onPress={() => moreDetails(jobID)}
+      underlayColor="#dbdbdb"
+  >
+    <Text style={styles.buttonText}>Details</Text>
+  </TouchableHighlight>
+  )
 }
 
 function ApplicationCards(applications) {
-  if (applications != undefined && applications.length) {
+  if (applications != undefined && applications.length  && applications != null) {
     return Object.entries(applications).map(([key, value]) => {
       const app = Object.entries(JSON.parse(value[1]));
       const jobID = value[0];
@@ -55,8 +75,8 @@ function ApplicationCards(applications) {
           <Text style={styles.optionText}>Applied Via: {appliedVia}</Text>
           <Text style={styles.optionText}>Company size: {companySize}</Text>
           <Text style={styles.optionText}>Interest level: {interestLevel}</Text>
-          <Delete>
-          </Delete>
+          {Details(jobID)}
+          {Delete(jobID)}
         </Card>
       );
     });
