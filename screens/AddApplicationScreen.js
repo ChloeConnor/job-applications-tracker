@@ -35,37 +35,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginRight: 10,
     marginLeft: 10,
-  },
-  contentContainer: {
-    paddingTop: 15,
-  },
-  textInput: {
-    flex: 1,
-    borderBottomWidth: 1,
-    borderRightWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
-    marginRight: 10,
-    marginLeft: 10,
-    height: 40,
-    padding: 5,
-  },
-  text: {
-    flex: 1,
-    marginRight: 10,
-    marginLeft: 10,
-    height: 40,
-    padding: 5,
-  },
-  button: {
-    flex: 1,
-    alignItems: "center",
-    backgroundColor: Colors.orange,
-    padding: 15,
-    marginRight: 100,
-    marginLeft: 100,
-  },
-  buttonText: {
-    color: "white",
-  },
+  }
 });

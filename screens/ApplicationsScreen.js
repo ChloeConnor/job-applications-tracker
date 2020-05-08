@@ -19,7 +19,17 @@ function getValue(application, field) {
   ])[1]
 }
 
-function applicationCards(applications) {
+function Delete() {
+  return (<TouchableHighlight
+  style={styles.button}
+  onPress={() => deleteApplication(jobID)}
+  underlayColor="#dbdbdb"
+>
+  <Text style={styles.buttonText}>Delete</Text>
+</TouchableHighlight>)
+}
+
+function ApplicationCards(applications) {
   if (applications != undefined && applications.length) {
     return Object.entries(applications).map(([key, value]) => {
       const app = Object.entries(JSON.parse(value[1]));
@@ -33,8 +43,6 @@ function applicationCards(applications) {
       const appliedVia = getValue(app, "applied_via");
       const companySize = getValue(app, "company_size");
 
-      console.log(app.filter(([key, value]) => key == "salary"));
-
       return (
         <Card
           containerStyle={styles.card}
@@ -47,13 +55,8 @@ function applicationCards(applications) {
           <Text style={styles.optionText}>Applied Via: {appliedVia}</Text>
           <Text style={styles.optionText}>Company size: {companySize}</Text>
           <Text style={styles.optionText}>Interest level: {interestLevel}</Text>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={() => deleteApplication(jobID)}
-            underlayColor="#dbdbdb"
-          >
-            <Text style={styles.buttonText}>Delete</Text>
-          </TouchableHighlight>
+          <Delete>
+          </Delete>
         </Card>
       );
     });
@@ -84,14 +87,14 @@ export default function ApplicationsScreen() {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      {applicationCards(applications)}
+      {ApplicationCards(applications)}
       <Text></Text>
       <TouchableHighlight
         style={styles.button}
         onPress={check}
         underlayColor="#dbdbdb"
       >
-        <Text style={styles.buttonText}>CHECK</Text>
+        <Text style={styles.buttonText}>UPDATE</Text>
       </TouchableHighlight>
     </ScrollView>
   );
