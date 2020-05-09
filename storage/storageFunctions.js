@@ -14,7 +14,7 @@ export function deleteApplication(jobID) {
   //doesn't remove from array just removes value
 }
 
-export function getOneApplication(jobID) {
+export function getOneApplication(jobID, setApp) {
   console.log("getting application: ", jobID);
-  return AsyncStorage.getItem(jobID);
+  AsyncStorage.getItem(jobID.then((app) => setApp(app)));
 }

@@ -12,7 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
-import {FormWithSubmit} from "../components/FormWithSubmit";
+import { FormWithSubmit } from "../components/FormWithSubmit";
 
 const statusDict = {
   applied: "Applied",
@@ -25,7 +25,7 @@ const statusDict = {
   cancelled: "Cancelled",
 };
 
-export default function AddApplicationScreen() {
+export default function AddApplicationScreen({ navigation }) {
   return <FormWithSubmit></FormWithSubmit>;
 }
 
@@ -35,5 +35,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginRight: 10,
     marginLeft: 10,
-  }
+  },
 });

@@ -2,8 +2,10 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { FormWithSubmit } from "../components/FormWithSubmit";
 
-export default function ApplicationDetailsScreen() {
-  return <FormWithSubmit jobIDInput="kroo"></FormWithSubmit>;
+export default function ApplicationDetailsScreen({ navigation }) {
+  return (
+    <FormWithSubmit jobIDInput="kroo"></FormWithSubmit>
+  );
 }
 
 const styles = StyleSheet.create({

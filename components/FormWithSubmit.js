@@ -29,25 +29,44 @@ const statusOptions = Object.entries(statusDict).map(([key, value]) => (
   <Picker.Item label={value} value={key} key={key} />
 ));
 
-export function FormWithSubmit({ jobIDInput }) {
+// const CompanyField = () => (
+//   <TextInput
+//     style={styles.textInput}
+//     defaultValue={jobID}
+//     onChangeText={(value) => {
+//       setUpdatedFormValues({ ...updatedFormValues, company: value });
+//       const id = value.toLowerCase().replace(" ", "");
+//       if (jobID == null) {
+//         setJobID(id);
+//       }
+//     }}
+//   ></TextInput>
+// );
+
+function onSubmit(jobID, updatedFormValues) {
+  if (jobID != undefined && jobID != "") {
+    AsyncStorage.setItem(jobID, JSON.stringify(updatedFormValues));
+    Alert.alert("Added!");
+    // navigation.navigate("Applications");
+  } else {
+    Alert.alert("Invalid form");
+  }
+}
+
+export const FormWithSubmit = ({ jobIDInput }) => {
   const [updatedFormValues, setUpdatedFormValues] = useState({});
   const [jobID, setJobID] = useState(jobIDInput || {});
   const [interestLevel, setInterestLevel] = useState(0);
 
   console.log("jobid input: ", jobIDInput);
+
   useEffect(() => {
-    setUpdatedFormValues(getOneApplication(jobIDInput));
+    if (jobIDInput != undefined) {
+      getOneApplication(jobIDInput, setUpdatedFormValues);
+    }
   }, [jobIDInput]);
 
   console.log("values:", updatedFormValues);
-  function onSubmit() {
-    if (jobID != undefined && jobID != "") {
-      AsyncStorage.setItem(jobID, JSON.stringify(updatedFormValues));
-      Alert.alert("Added!");
-    } else {
-      Alert.alert("Invalid form");
-    }
-  }
 
   return (
     <ScrollView
@@ -57,7 +76,6 @@ export function FormWithSubmit({ jobIDInput }) {
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
-          defaultValue={jobID}
           onChangeText={(value) => {
             setUpdatedFormValues({ ...updatedFormValues, company: value });
             const id = value.toLowerCase().replace(" ", "");
@@ -65,25 +83,41 @@ export function FormWithSubmit({ jobIDInput }) {
               setJobID(id);
             }
           }}
-        >
-          Company
-        </TextInput>
+          placeholder="Company"
+        ></TextInput>
+
         <TextInput
           style={styles.textInput}
           onChangeText={(value) => {
             setUpdatedFormValues({ ...updatedFormValues, role: value });
           }}
-        >
-          Role
-        </TextInput>
+          placeholder="Role"
+        ></TextInput>
+
         <TextInput
           style={styles.textInput}
           onChangeText={(value) => {
             setUpdatedFormValues({ ...updatedFormValues, salary: value });
           }}
-        >
-          Salary
-        </TextInput>
+          placeholder="Salary"
+        ></TextInput>
+
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(value) => {
+            setUpdatedFormValues({ ...updatedFormValues, company_size: value });
+          }}
+          placeholder="Company size"
+        ></TextInput>
+
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(value) => {
+            setUpdatedFormValues({ ...updatedFormValues, applied_via: value });
+          }}
+          placeholder="Applied via"
+        ></TextInput>
+
         <Picker
           style={styles.container}
           selectedValue={updatedFormValues.status}
@@ -94,22 +128,7 @@ export function FormWithSubmit({ jobIDInput }) {
           <Picker.Item key={"Stage"} label={"Stage"} value={0} />
           {statusOptions}
         </Picker>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(value) => {
-            setUpdatedFormValues({ ...updatedFormValues, company_size: value });
-          }}
-        >
-          Company size
-        </TextInput>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(value) => {
-            setUpdatedFormValues({ ...updatedFormValues, applied_via: value });
-          }}
-        >
-          Applied via
-        </TextInput>
+
         <Text></Text>
         <Text style={styles.text}>Interest level: {interestLevel}</Text>
         <Slider
@@ -131,7 +150,7 @@ export function FormWithSubmit({ jobIDInput }) {
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={onSubmit}
+          onPress={onSubmit(jobID, updatedFormValues)}
           underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>
@@ -140,7 +159,7 @@ export function FormWithSubmit({ jobIDInput }) {
       <Text></Text>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
