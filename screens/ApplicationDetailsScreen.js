@@ -1,21 +1,9 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-  Picker,
-  Alert,
-  Slider,
-} from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
-import Colors from "../constants/Colors";
-import { TextInput } from "react-native";
-import { AsyncStorage } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { FormWithSubmit } from "../components/FormWithSubmit";
 
 export default function ApplicationDetailsScreen() {
-  return <Text>Hey</Text>;
+  return <FormWithSubmit jobIDInput="kroo"></FormWithSubmit>;
 }
 
 const styles = StyleSheet.create({

@@ -12,6 +12,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
+import { getOneApplication } from "../storage/storageFunctions";
 
 const statusDict = {
   applied: "Applied",
@@ -28,18 +29,17 @@ const statusOptions = Object.entries(statusDict).map(([key, value]) => (
   <Picker.Item label={value} value={key} key={key} />
 ));
 
-
-export function FormWithSubmit(formValues) {
+export function FormWithSubmit({ jobIDInput }) {
   const [updatedFormValues, setUpdatedFormValues] = useState({});
-  const [jobID, setJobID] = useState("");
+  const [jobID, setJobID] = useState(jobIDInput || {});
   const [interestLevel, setInterestLevel] = useState(0);
 
+  console.log("jobid input: ", jobIDInput);
   useEffect(() => {
-    if (formValues != null) {
-      setUpdatedFormValues(formValues);
-    }
-  }, [formValues]);
+    setUpdatedFormValues(getOneApplication(jobIDInput));
+  }, [jobIDInput]);
 
+  console.log("values:", updatedFormValues);
   function onSubmit() {
     if (jobID != undefined && jobID != "") {
       AsyncStorage.setItem(jobID, JSON.stringify(updatedFormValues));
@@ -57,10 +57,13 @@ export function FormWithSubmit(formValues) {
       <View style={styles.container}>
         <TextInput
           style={styles.textInput}
+          defaultValue={jobID}
           onChangeText={(value) => {
             setUpdatedFormValues({ ...updatedFormValues, company: value });
             const id = value.toLowerCase().replace(" ", "");
-            setJobID(id);
+            if (jobID == null) {
+              setJobID(id);
+            }
           }}
         >
           Company

@@ -7,14 +7,12 @@ import { AsyncStorage } from "react-native";
 import Colors from "../constants/Colors";
 import {
   getApplications,
-  getOneApplication,
   deleteApplication,
   getKeys,
 } from "../storage/storageFunctions";
 
-function moreDetails(jobID) {
-  const applicationInfo = getOneApplication(jobID);
-  // navigation.navigate('Details')
+function moreDetails(jobID, navigation) {
+  navigation.navigate("Details");
 }
 
 function getValue(application, field) {
@@ -34,19 +32,19 @@ const Delete = ({ jobID }) => (
   </TouchableHighlight>
 );
 
-const Details = ({ jobID }) => (
+const Details = ({ jobID, navigation }) => (
   <TouchableHighlight
     style={styles.button}
-    onPress={() => moreDetails(jobID)}
+    onPress={() => moreDetails(jobID, navigation)}
     underlayColor="#dbdbdb"
   >
     <Text style={styles.buttonText}>Details</Text>
   </TouchableHighlight>
 );
 
-function ApplicationCards(applications) {
+function ApplicationCards(applications, navigation) {
   console.log("applications", applications);
-  
+
   if (
     applications != undefined &&
     applications.length &&
@@ -77,7 +75,7 @@ function ApplicationCards(applications) {
           <Text style={styles.optionText}>Applied Via: {appliedVia}</Text>
           <Text style={styles.optionText}>Company size: {companySize}</Text>
           <Text style={styles.optionText}>Interest level: {interestLevel}</Text>
-          <Details jobID={jobID}></Details>
+          <Details jobID={jobID} navigation={navigation}></Details>
           <Delete jobID={jobID}></Delete>
         </Card>
       );
@@ -85,7 +83,7 @@ function ApplicationCards(applications) {
   }
 }
 
-export default function ApplicationsScreen() {
+export default function ApplicationsScreen({ navigation }) {
   const [keys, setKeys] = useState([]);
   const [applications, setApplications] = useState({});
 
@@ -105,7 +103,7 @@ export default function ApplicationsScreen() {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      {ApplicationCards(applications)}
+      {ApplicationCards(applications, navigation)}
       <Text></Text>
       <TouchableHighlight
         style={styles.button}

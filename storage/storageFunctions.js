@@ -16,5 +16,5 @@ export function deleteApplication(jobID) {
 
 export function getOneApplication(jobID) {
   console.log("getting application: ", jobID);
-  AsyncStorage.getItem(jobID);
+  return AsyncStorage.getItem(jobID);
 }
