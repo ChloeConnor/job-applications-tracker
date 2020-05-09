@@ -14,7 +14,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
 import useLinking from "./navigation/useLinking";
 import Colors from "./constants/Colors";
-import { ApplicationDetailsScreen } from "./screens/ApplicationDetailsScreen";
+import ApplicationDetailsScreen from "./screens/ApplicationDetailsScreen";
 
 const Stack = createStackNavigator();
 
@@ -62,8 +62,6 @@ export default function App(props) {
         >
           <Stack.Navigator>
             <Stack.Screen name="Root" component={BottomTabNavigator} />
-          </Stack.Navigator>
-          <Stack.Navigator>
             <Stack.Screen name="Details" component={ApplicationDetailsScreen} />
           </Stack.Navigator>
         </NavigationContainer>

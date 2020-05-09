@@ -1,15 +1,17 @@
 import { AsyncStorage } from "react-native";
 
-export function getApplications(setKeys, setApplications) {
-  console.log("load all applications");
+export function getKeys(setKeys) {
   AsyncStorage.getAllKeys().then((key) => setKeys(key));
+}
+export function getApplications(keys, setApplications) {
+  console.log("load all applications");
   AsyncStorage.multiGet(keys).then((job) => setApplications(job));
 }
 
 export function deleteApplication(jobID) {
-  console.log("delete ", jobID);
-  console.log(jobID);
+  console.log("delete: ", jobID);
   AsyncStorage.removeItem(jobID);
+  //doesn't remove from array just removes value
 }
 
 export function getOneApplication(jobID) {

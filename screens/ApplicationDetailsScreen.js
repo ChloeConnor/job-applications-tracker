@@ -12,12 +12,10 @@ import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
-import {FormWithSubmit} from "../components/FormWithSubmit";
-
+import { FormWithSubmit } from "../components/FormWithSubmit";
 
 export default function ApplicationDetailsScreen() {
-//   return <FormWithSubmit
-//   formData={}></FormWithSubmit>;
+  return <Text>Hey</Text>;
 }
 
 const styles = StyleSheet.create({
@@ -26,5 +24,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginRight: 10,
     marginLeft: 10,
-  }
+  },
 });

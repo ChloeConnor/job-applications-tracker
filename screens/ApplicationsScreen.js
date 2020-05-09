@@ -9,11 +9,12 @@ import {
   getApplications,
   getOneApplication,
   deleteApplication,
+  getKeys,
 } from "../storage/storageFunctions";
 
 function moreDetails(jobID) {
   const applicationInfo = getOneApplication(jobID);
-  navigation.navigate('Details')
+  // navigation.navigate('Details')
 }
 
 function getValue(application, field) {
@@ -44,6 +45,8 @@ const Details = ({ jobID }) => (
 );
 
 function ApplicationCards(applications) {
+  console.log("applications", applications);
+  
   if (
     applications != undefined &&
     applications.length &&
@@ -66,6 +69,7 @@ function ApplicationCards(applications) {
           containerStyle={styles.card}
           titleStyle={styles.cardTitle}
           title={company}
+          key={jobID}
         >
           <Text style={styles.optionText}>Stage: {stage}</Text>
           <Text style={styles.optionText}>Role: {role}</Text>
@@ -86,13 +90,14 @@ export default function ApplicationsScreen() {
   const [applications, setApplications] = useState({});
 
   useEffect(() => {
-    getApplications();
+    getKeys(setKeys);
+    getApplications(keys, setApplications);
   }, []);
 
   // hack becayse useEffect doesn't work
   function check() {
-    getApplications();
-    console.log(applications);
+    getKeys(setKeys);
+    getApplications(keys, setApplications);
   }
 
   return (
