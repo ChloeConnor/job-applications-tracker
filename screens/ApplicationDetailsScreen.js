@@ -4,7 +4,7 @@ import { FormWithSubmit } from "../components/FormWithSubmit";
 
 export default function ApplicationDetailsScreen({ navigation }) {
   return (
-    <FormWithSubmit jobIDInput="kroo"></FormWithSubmit>
+    <FormWithSubmit jobIDInput="kroo" navigation={navigation}></FormWithSubmit>
   );
 }
 

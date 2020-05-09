@@ -43,22 +43,23 @@ const statusOptions = Object.entries(statusDict).map(([key, value]) => (
 //   ></TextInput>
 // );
 
-function onSubmit(jobID, updatedFormValues) {
+function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
   if (jobID != undefined && jobID != "") {
+    console.log("jobid", jobID);
+    console.log("stringify", JSON.stringify(updatedFormValues));
     AsyncStorage.setItem(jobID, JSON.stringify(updatedFormValues));
     Alert.alert("Added!");
-    // navigation.navigate("Applications");
+    navigation.navigate("Applications");
+    setUpdatedFormValues({})
   } else {
     Alert.alert("Invalid form");
   }
 }
 
-export const FormWithSubmit = ({ jobIDInput }) => {
+export const FormWithSubmit = ({ jobIDInput, navigation }) => {
   const [updatedFormValues, setUpdatedFormValues] = useState({});
-  const [jobID, setJobID] = useState(jobIDInput || {});
+  const [jobID, setJobID] = useState(jobIDInput || null);
   const [interestLevel, setInterestLevel] = useState(0);
-
-  console.log("jobid input: ", jobIDInput);
 
   useEffect(() => {
     if (jobIDInput != undefined) {
@@ -79,9 +80,8 @@ export const FormWithSubmit = ({ jobIDInput }) => {
           onChangeText={(value) => {
             setUpdatedFormValues({ ...updatedFormValues, company: value });
             const id = value.toLowerCase().replace(" ", "");
-            if (jobID == null) {
-              setJobID(id);
-            }
+
+            setJobID(id);
           }}
           placeholder="Company"
         ></TextInput>
@@ -150,7 +150,7 @@ export const FormWithSubmit = ({ jobIDInput }) => {
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={onSubmit(jobID, updatedFormValues)}
+          onPress={() => onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues)}
           underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>

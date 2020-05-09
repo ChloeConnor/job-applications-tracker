@@ -26,7 +26,7 @@ const statusDict = {
 };
 
 export default function AddApplicationScreen({ navigation }) {
-  return <FormWithSubmit></FormWithSubmit>;
+  return <FormWithSubmit navigation={navigation}></FormWithSubmit>;
 }
 
 const styles = StyleSheet.create({

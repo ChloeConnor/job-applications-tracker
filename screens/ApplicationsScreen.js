@@ -57,7 +57,7 @@ function ApplicationCards(applications, navigation) {
       const company = app.filter(([key, value]) => key == "company")[0][1];
       const role = getValue(app, "role");
       const salary = getValue(app, "salary");
-      const stage = getValue(app, "stage");
+      const stage = getValue(app, "status");
       const interestLevel = getValue(app, "interest_level");
       const appliedVia = getValue(app, "applied_via");
       const companySize = getValue(app, "company_size");
@@ -112,6 +112,7 @@ export default function ApplicationsScreen({ navigation }) {
       >
         <Text style={styles.buttonText}>UPDATE</Text>
       </TouchableHighlight>
+
     </ScrollView>
   );
 }
