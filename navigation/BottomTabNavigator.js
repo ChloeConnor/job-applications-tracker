@@ -1,12 +1,12 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import * as React from "react";
-
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import ApplicationsScreen from "../screens/ApplicationsScreen";
 import AddApplicationScreen from "../screens/AddApplicationScreen";
-import { Ionicons } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
+import Colors from "../constants/Colors";
+
 const BottomTab = createBottomTabNavigator();
 const INITIAL_ROUTE_NAME = "Home";
 
@@ -17,7 +17,12 @@ export default function BottomTabNavigator({ navigation, route }) {
   navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator
+      tabBarOptions={{
+        activeTintColor: Colors.orange,
+      }}
+      initialRouteName={INITIAL_ROUTE_NAME}
+    >
       <BottomTab.Screen
         name="Home"
         component={HomeScreen}
@@ -69,6 +74,6 @@ function getHeaderTitle(route) {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 });

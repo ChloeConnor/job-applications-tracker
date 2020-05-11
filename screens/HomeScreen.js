@@ -10,8 +10,6 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { MonoText } from "../components/StyledText";
-
 export default function HomeScreen() {
   return (
     <View style={styles.container}>
@@ -190,6 +188,6 @@ const styles = StyleSheet.create({
   },
   helpLinkText: {
     fontSize: 18,
-    color: "#2e78b7",
+    color: 'grey',
   },
 });
