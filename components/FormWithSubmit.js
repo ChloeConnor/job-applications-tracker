@@ -28,40 +28,64 @@ function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
   }
 }
 
-const InterviewDatePicker = ({ setFormValues, formValues }) => {
+const InterviewDatePicker = ({ setFormValues, formValues, show }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  return (
-    <View>
+  const date = (formValues || {})["interview_date"]["nativeEvent"]["timestamp"];
+
+  if (show) {
+    return (
       <View>
-        <Button
-          onPress={() => setShowDatePicker(!showDatePicker)}
-          title="Set interview date"
-        />
-      </View>
-      {/* <View>
+        <Text style={styles.text}>
+          Interview date:
+          {(date || new Date()).toString()}
+        </Text>
+        <Text></Text>
+        <View>
+          <Button
+            color={Colors.orange}
+            onPress={() => setShowDatePicker(!showDatePicker)}
+            title="Set interview date"
+          />
+        </View>
+        {/* <View>
         <Button onPress={showTimepicker} title="Show time picker!" />
       </View> */}
-      {showDatePicker && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          timeZoneOffsetInMinutes={0}
-          value={new Date()}
-          mode={"date"}
-          is24Hour={true}
-          display="default"
-          onChange={(value) => {
-            setFormValues({ ...formValues, salary: value });
-          }}
-        />
-      )}
-    </View>
-  );
+        {showDatePicker && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
+            value={new Date()}
+            mode={"date"}
+            is24Hour={true}
+            display="default"
+            onChange={(value) => {
+              setFormValues({ ...formValues, interview_date: value });
+              setShowDatePicker(false);
+            }}
+          />
+        )}
+      </View>
+    );
+  } else {
+    return <Text style={styles.text}>No interview to schedule</Text>;
+  }
 };
 
 export const FormWithSubmit = ({ navigation }) => {
   const [formValues, setFormValues] = useState({});
   const [jobID, setJobID] = useState("");
+  const [showInterviewDate, setShowInterviewDate] = useState(false);
+
+  useEffect(() => {
+    if (
+      ["phone_interview", "second_interview", "final_interview"].includes(
+        formValues["status"]
+      )
+    ) {
+      setShowInterviewDate(true);
+    }
+  }, [formValues]);
 
   return (
     <ScrollView
@@ -112,6 +136,7 @@ export const FormWithSubmit = ({ navigation }) => {
           placeholder="Applied via"
         ></TextInput>
         <Text></Text>
+        <Text style={styles.text}>Stage</Text>
         <Picker
           style={styles.container}
           selectedValue={formValues.status}
@@ -135,11 +160,14 @@ export const FormWithSubmit = ({ navigation }) => {
           {StatusOptions}
         </Picker>
 
+        <Text></Text>
         <InterviewDatePicker
+          show={showInterviewDate}
           setFormValues={setFormValues}
           formValues={formValues}
         ></InterviewDatePicker>
 
+        <Text></Text>
         <Text></Text>
         <Text style={styles.text}>
           Interest level: {formValues["interest_level"] || 0}
@@ -158,6 +186,7 @@ export const FormWithSubmit = ({ navigation }) => {
           }}
           step={1}
         />
+        <Text></Text>
         <Text></Text>
         <Text></Text>
         <TouchableHighlight

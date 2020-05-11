@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AwesomeApp",
-    "slug": "AwesomeApp",
+    "name": "job-applications-tracker",
+    "slug": "job-applications-tracker",
     "platforms": [
       "ios",
       "android",
