@@ -1,69 +1,108 @@
-import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
-import { RectButton, ScrollView } from "react-native-gesture-handler";
+import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Card } from "react-native-elements";
-import { AsyncStorage } from "react-native";
 import Colors from "../constants/Colors";
+import {
+  getApplications,
+  deleteApplication,
+  getKeys,
+} from "../storage/storageFunctions";
+import { Icon } from "react-native-elements";
+import { statusDict } from "../components/StatusOptions";
 
-function deleteApplication(jobID) {
-  console.log("delete");
-  console.log(jobID);
-  AsyncStorage.removeItem(jobID);
+function moreDetails(jobID, navigation) {
+  navigation.navigate("Details", {
+    jobIDInput: jobID,
+  });
 }
 
-function applicationCards(applications) {
-  
-  if (applications != undefined && applications.length) {
+function getValue(application, field) {
+  return (application.filter(([key, value]) => key == field)[0] || [
+    field,
+    "Unknown",
+  ])[1];
+}
+
+const Delete = ({ jobID }) => (
+  <TouchableHighlight
+    style={styles.buttonDelete}
+    onPress={() => deleteApplication(jobID)}
+    underlayColor="#dbdbdb"
+  >
+    <Icon
+      name="delete"
+      size={25}
+      color="white"
+      style={{ height: 25, width: 25 }}
+    />
+  </TouchableHighlight>
+);
+
+const Details = ({ jobID, navigation }) => (
+  <TouchableHighlight
+    style={styles.button}
+    onPress={() => moreDetails(jobID, navigation)}
+    underlayColor="#dbdbdb"
+  >
+    <Icon
+      name="arrow-forward"
+      size={25}
+      color="white"
+      style={{ height: 25, width: 25 }}
+    />
+  </TouchableHighlight>
+);
+
+function ApplicationCards(applications, navigation) {
+  console.log("applications", applications);
+
+  if (
+    applications != undefined &&
+    applications.length &&
+    applications != null
+  ) {
     return Object.entries(applications).map(([key, value]) => {
-      console.log(value);
       const app = Object.entries(JSON.parse(value[1]));
       const jobID = value[0];
 
       const company = app.filter(([key, value]) => key == "company")[0][1];
-      const role = app.filter(([key, value]) => key == "role")[0][1];
-      const salary = app.filter(([key, value]) => key == "salary")[0][1];
-      const stage = app.filter(([key, value]) => key == "status")[0][1];
+      const role = getValue(app, "role");
+      const stage = statusDict[getValue(app, "status")];
 
       return (
         <Card
           containerStyle={styles.card}
           titleStyle={styles.cardTitle}
           title={company}
+          key={jobID}
         >
-          <Text style={styles.optionText}>{stage}</Text>
-          <Text style={styles.optionText}>{role}</Text>
-          <Text style={styles.optionText}>{salary}</Text>
-          <TouchableHighlight
-            style={styles.button}
-            onPress={() => deleteApplication(jobID)}
-            underlayColor="#99d9f4"
-          >
-            <Text style={styles.buttonText}>Delete</Text>
-          </TouchableHighlight>
+          <Text style={styles.optionText}>Role: {role}</Text>
+          <Text style={styles.optionText}>Stage: {stage}</Text>
+          <Text></Text>
+          <View styles={styles.buttonContainer}>
+            <Details jobID={jobID} navigation={navigation}></Details>
+            <Delete jobID={jobID}></Delete>
+          </View>
         </Card>
       );
     });
   }
 }
 
-export default function ApplicationsScreen() {
+export default function ApplicationsScreen({ navigation }) {
   const [keys, setKeys] = useState([]);
   const [applications, setApplications] = useState({});
 
-  function getApplications() {
-    console.log("load");
-    AsyncStorage.getAllKeys().then((key) => setKeys(key));
-    AsyncStorage.multiGet(keys).then((job) => setApplications(job));
-  }
-
   useEffect(() => {
-    getApplications();
+    getKeys(setKeys);
+    getApplications(keys, setApplications);
   }, []);
 
+  // hack because useEffect doesn't work
   function check() {
-    getApplications();
-    console.log(applications);
+    getKeys(setKeys);
+    getApplications(keys, setApplications);
   }
 
   return (
@@ -71,15 +110,16 @@ export default function ApplicationsScreen() {
       style={styles.container}
       contentContainerStyle={styles.contentContainer}
     >
-      {applicationCards(applications)}
+      {ApplicationCards(applications, navigation)}
       <Text></Text>
       <TouchableHighlight
-        style={styles.button}
+        style={styles.updateButton}
         onPress={check}
-        underlayColor="#99d9f4"
+        underlayColor="#dbdbdb"
       >
-        <Text style={styles.buttonText}>CHECK</Text>
+        <Text style={styles.buttonText}>UPDATE</Text>
       </TouchableHighlight>
+      <Text></Text>
     </ScrollView>
   );
 }
@@ -92,16 +132,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 15,
   },
-  optionIconContainer: {
+  icon: {
     marginRight: 12,
-  },
-  option: {
-    backgroundColor: "#fdfdfd",
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 0,
-    borderColor: "#ededed",
   },
   lastOption: {
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -111,6 +143,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginTop: 1,
     color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   card: {
     backgroundColor: Colors.orange,
@@ -120,10 +154,40 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    backgroundColor: Colors.orange,
+    padding: 2,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  buttonDelete: {
+    flex: 1,
+    backgroundColor: Colors.orange,
+    padding: 2,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexWrap: "wrap",
+    justifyContent: "center",
+    flexDirection: "row",
+    borderWidth: 1,
+  },
+  updateButton: {
+    flex: 1,
     alignItems: "center",
     backgroundColor: Colors.orange,
-    padding: 15,
+    padding: 10,
     marginRight: 100,
     marginLeft: 100,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
