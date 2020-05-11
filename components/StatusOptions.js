@@ -1,9 +1,9 @@
 import React from "react";
 import { Picker } from "react-native";
 
-const statusDict = {
+export const statusDict = {
   applied: "Applied",
-  phoneInterview: "Phone interview",
+  phone_interview: "Phone interview",
   second_interview: "Second Interview",
   final_interview: "Final Interview",
   take_home_test: "Take home test",

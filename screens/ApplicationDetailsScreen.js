@@ -77,6 +77,7 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
             setInterestLevel(value);
           }}
           step={1}
+          value={interestLevel}
         />
         <Text></Text>
         <Text></Text>

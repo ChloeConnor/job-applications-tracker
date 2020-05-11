@@ -1,19 +1,19 @@
-import { Ionicons } from "@expo/vector-icons";
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
-import { RectButton, ScrollView } from "react-native-gesture-handler";
+import { StyleSheet, Text, TouchableHighlight, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import { Card } from "react-native-elements";
-import { AsyncStorage } from "react-native";
 import Colors from "../constants/Colors";
 import {
   getApplications,
   deleteApplication,
   getKeys,
 } from "../storage/storageFunctions";
+import { Icon } from "react-native-elements";
+import { statusDict } from "../components/StatusOptions";
 
 function moreDetails(jobID, navigation) {
   navigation.navigate("Details", {
-    jobIDInput: jobID
+    jobIDInput: jobID,
   });
 }
 
@@ -26,11 +26,16 @@ function getValue(application, field) {
 
 const Delete = ({ jobID }) => (
   <TouchableHighlight
-    style={styles.button}
+    style={styles.buttonDelete}
     onPress={() => deleteApplication(jobID)}
     underlayColor="#dbdbdb"
   >
-    <Text style={styles.buttonText}>Delete</Text>
+    <Icon
+      name="delete"
+      size={25}
+      color="white"
+      style={{ height: 25, width: 25 }}
+    />
   </TouchableHighlight>
 );
 
@@ -40,7 +45,12 @@ const Details = ({ jobID, navigation }) => (
     onPress={() => moreDetails(jobID, navigation)}
     underlayColor="#dbdbdb"
   >
-    <Text style={styles.buttonText}>Details</Text>
+    <Icon
+      name="arrow-forward"
+      size={25}
+      color="white"
+      style={{ height: 25, width: 25 }}
+    />
   </TouchableHighlight>
 );
 
@@ -58,11 +68,7 @@ function ApplicationCards(applications, navigation) {
 
       const company = app.filter(([key, value]) => key == "company")[0][1];
       const role = getValue(app, "role");
-      const salary = getValue(app, "salary");
-      const stage = getValue(app, "status");
-      const interestLevel = getValue(app, "interest_level");
-      const appliedVia = getValue(app, "applied_via");
-      const companySize = getValue(app, "company_size");
+      const stage = statusDict[getValue(app, "status")];
 
       return (
         <Card
@@ -71,14 +77,13 @@ function ApplicationCards(applications, navigation) {
           title={company}
           key={jobID}
         >
-          <Text style={styles.optionText}>Stage: {stage}</Text>
           <Text style={styles.optionText}>Role: {role}</Text>
-          <Text style={styles.optionText}>Salary: {salary}</Text>
-          <Text style={styles.optionText}>Applied Via: {appliedVia}</Text>
-          <Text style={styles.optionText}>Company size: {companySize}</Text>
-          <Text style={styles.optionText}>Interest level: {interestLevel}</Text>
-          <Details jobID={jobID} navigation={navigation}></Details>
-          <Delete jobID={jobID}></Delete>
+          <Text style={styles.optionText}>Stage: {stage}</Text>
+          <Text></Text>
+          <View styles={styles.buttonContainer}>
+            <Details jobID={jobID} navigation={navigation}></Details>
+            <Delete jobID={jobID}></Delete>
+          </View>
         </Card>
       );
     });
@@ -108,13 +113,13 @@ export default function ApplicationsScreen({ navigation }) {
       {ApplicationCards(applications, navigation)}
       <Text></Text>
       <TouchableHighlight
-        style={styles.button}
+        style={styles.updateButton}
         onPress={check}
         underlayColor="#dbdbdb"
       >
         <Text style={styles.buttonText}>UPDATE</Text>
       </TouchableHighlight>
-
+      <Text></Text>
     </ScrollView>
   );
 }
@@ -127,16 +132,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingTop: 15,
   },
-  optionIconContainer: {
+  icon: {
     marginRight: 12,
-  },
-  option: {
-    backgroundColor: "#fdfdfd",
-    paddingHorizontal: 15,
-    paddingVertical: 15,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderBottomWidth: 0,
-    borderColor: "#ededed",
   },
   lastOption: {
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -146,6 +143,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     marginTop: 1,
     color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
   card: {
     backgroundColor: Colors.orange,
@@ -155,10 +154,40 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
+    backgroundColor: Colors.orange,
+    padding: 2,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  buttonDelete: {
+    flex: 1,
+    backgroundColor: Colors.orange,
+    padding: 2,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginRight: 10,
+    marginLeft: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    flexWrap: "wrap",
+    justifyContent: "center",
+    flexDirection: "row",
+    borderWidth: 1,
+  },
+  updateButton: {
+    flex: 1,
     alignItems: "center",
     backgroundColor: Colors.orange,
-    padding: 15,
+    padding: 10,
     marginRight: 100,
     marginLeft: 100,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
