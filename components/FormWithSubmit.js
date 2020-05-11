@@ -12,9 +12,8 @@ import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
-import { getOneApplication } from "../storage/storageFunctions";
-import {StatusOptions} from "../components/StatusOptions"
-
+import { StatusOptions } from "../components/StatusOptions";
+import { Icon } from "react-native-elements";
 
 function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
   if (jobID != undefined && jobID != "") {
@@ -38,7 +37,6 @@ export const FormWithSubmit = ({ navigation }) => {
     >
       <View style={styles.container}>
         <TextInput
-                  
           style={styles.textInput}
           onChangeText={(value) => {
             setFormValues({ ...formValues, company: value });
@@ -80,7 +78,7 @@ export const FormWithSubmit = ({ navigation }) => {
           }}
           placeholder="Applied via"
         ></TextInput>
-
+        <Text></Text>
         <Picker
           style={styles.container}
           selectedValue={formValues.status}
@@ -88,12 +86,26 @@ export const FormWithSubmit = ({ navigation }) => {
             setFormValues({ ...formValues, status: itemValue });
           }}
         >
-          <Picker.Item key={"Stage"} label={"Stage"} value={0} />
+          <Picker.Item
+            key={"Stage"}
+            label="🔽 Select Stage"
+            value={0}
+            color={Colors.orange}
+          >
+            <Icon
+              name="delete"
+              size={25}
+              color="black"
+              style={{ height: 25, width: 25 }}
+            ></Icon>
+          </Picker.Item>
           {StatusOptions}
         </Picker>
 
         <Text></Text>
-        <Text style={styles.text}>Interest level: {formValues["interest_level"] || 0}</Text>
+        <Text style={styles.text}>
+          Interest level: {formValues["interest_level"] || 0}
+        </Text>
         <Slider
           style={{ width: 200, height: 40 }}
           minimumValue={0}
@@ -112,9 +124,7 @@ export const FormWithSubmit = ({ navigation }) => {
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() =>
-            onSubmit(jobID, formValues, navigation, setFormValues)
-          }
+          onPress={() => onSubmit(jobID, formValues, navigation, setFormValues)}
           underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>
@@ -138,9 +148,6 @@ const styles = StyleSheet.create({
   textInput: {
     flex: 1,
     borderBottomWidth: 1,
-    borderRightWidth: 1,
-    borderTopWidth: 1,
-    borderLeftWidth: 1,
     marginRight: 10,
     marginLeft: 10,
     height: 40,
@@ -152,6 +159,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     height: 40,
     padding: 5,
+    fontSize: 16
   },
   button: {
     flex: 1,
