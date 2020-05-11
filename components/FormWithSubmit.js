@@ -7,6 +7,7 @@ import {
   Picker,
   Alert,
   Slider,
+  Button,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
@@ -14,6 +15,7 @@ import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
 import { StatusOptions } from "../components/StatusOptions";
 import { Icon } from "react-native-elements";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
   if (jobID != undefined && jobID != "") {
@@ -25,6 +27,37 @@ function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
     Alert.alert("Invalid form");
   }
 }
+
+const InterviewDatePicker = ({ setFormValues, formValues }) => {
+  const [showDatePicker, setShowDatePicker] = useState(false);
+
+  return (
+    <View>
+      <View>
+        <Button
+          onPress={() => setShowDatePicker(!showDatePicker)}
+          title="Set interview date"
+        />
+      </View>
+      {/* <View>
+        <Button onPress={showTimepicker} title="Show time picker!" />
+      </View> */}
+      {showDatePicker && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          timeZoneOffsetInMinutes={0}
+          value={new Date()}
+          mode={"date"}
+          is24Hour={true}
+          display="default"
+          onChange={(value) => {
+            setFormValues({ ...formValues, salary: value });
+          }}
+        />
+      )}
+    </View>
+  );
+};
 
 export const FormWithSubmit = ({ navigation }) => {
   const [formValues, setFormValues] = useState({});
@@ -102,6 +135,11 @@ export const FormWithSubmit = ({ navigation }) => {
           {StatusOptions}
         </Picker>
 
+        <InterviewDatePicker
+          setFormValues={setFormValues}
+          formValues={formValues}
+        ></InterviewDatePicker>
+
         <Text></Text>
         <Text style={styles.text}>
           Interest level: {formValues["interest_level"] || 0}
@@ -159,7 +197,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     height: 40,
     padding: 5,
-    fontSize: 16
+    fontSize: 16,
   },
   button: {
     flex: 1,
