@@ -13,61 +13,24 @@ import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
 import { getOneApplication } from "../storage/storageFunctions";
+import {StatusOptions} from "../components/StatusOptions"
 
-const statusDict = {
-  applied: "Applied",
-  phoneInterview: "Phone interview",
-  second_interview: "Second Interview",
-  final_interview: "Final Interview",
-  take_home_test: "Take home test",
-  offer: "Offer",
-  rejected: "Rejected",
-  cancelled: "Cancelled",
-};
-
-const statusOptions = Object.entries(statusDict).map(([key, value]) => (
-  <Picker.Item label={value} value={key} key={key} />
-));
-
-// const CompanyField = () => (
-//   <TextInput
-//     style={styles.textInput}
-//     defaultValue={jobID}
-//     onChangeText={(value) => {
-//       setUpdatedFormValues({ ...updatedFormValues, company: value });
-//       const id = value.toLowerCase().replace(" ", "");
-//       if (jobID == null) {
-//         setJobID(id);
-//       }
-//     }}
-//   ></TextInput>
-// );
 
 function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
   if (jobID != undefined && jobID != "") {
-    console.log("jobid", jobID);
-    console.log("stringify", JSON.stringify(updatedFormValues));
+    console.log("adding application:", JSON.stringify(updatedFormValues));
     AsyncStorage.setItem(jobID, JSON.stringify(updatedFormValues));
     Alert.alert("Added!");
     navigation.navigate("Applications");
-    setUpdatedFormValues({})
   } else {
     Alert.alert("Invalid form");
   }
 }
 
-export const FormWithSubmit = ({ jobIDInput, navigation }) => {
-  const [updatedFormValues, setUpdatedFormValues] = useState({});
-  const [jobID, setJobID] = useState(jobIDInput || null);
+export const FormWithSubmit = ({ navigation }) => {
+  const [formValues, setFormValues] = useState({});
+  const [jobID, setJobID] = useState("");
   const [interestLevel, setInterestLevel] = useState(0);
-
-  useEffect(() => {
-    if (jobIDInput != undefined) {
-      getOneApplication(jobIDInput, setUpdatedFormValues);
-    }
-  }, [jobIDInput]);
-
-  console.log("values:", updatedFormValues);
 
   return (
     <ScrollView
@@ -76,9 +39,10 @@ export const FormWithSubmit = ({ jobIDInput, navigation }) => {
     >
       <View style={styles.container}>
         <TextInput
+                  
           style={styles.textInput}
           onChangeText={(value) => {
-            setUpdatedFormValues({ ...updatedFormValues, company: value });
+            setFormValues({ ...formValues, company: value });
             const id = value.toLowerCase().replace(" ", "");
 
             setJobID(id);
@@ -89,7 +53,7 @@ export const FormWithSubmit = ({ jobIDInput, navigation }) => {
         <TextInput
           style={styles.textInput}
           onChangeText={(value) => {
-            setUpdatedFormValues({ ...updatedFormValues, role: value });
+            setFormValues({ ...formValues, role: value });
           }}
           placeholder="Role"
         ></TextInput>
@@ -97,7 +61,7 @@ export const FormWithSubmit = ({ jobIDInput, navigation }) => {
         <TextInput
           style={styles.textInput}
           onChangeText={(value) => {
-            setUpdatedFormValues({ ...updatedFormValues, salary: value });
+            setFormValues({ ...formValues, salary: value });
           }}
           placeholder="Salary"
         ></TextInput>
@@ -105,7 +69,7 @@ export const FormWithSubmit = ({ jobIDInput, navigation }) => {
         <TextInput
           style={styles.textInput}
           onChangeText={(value) => {
-            setUpdatedFormValues({ ...updatedFormValues, company_size: value });
+            setFormValues({ ...formValues, company_size: value });
           }}
           placeholder="Company size"
         ></TextInput>
@@ -113,20 +77,20 @@ export const FormWithSubmit = ({ jobIDInput, navigation }) => {
         <TextInput
           style={styles.textInput}
           onChangeText={(value) => {
-            setUpdatedFormValues({ ...updatedFormValues, applied_via: value });
+            setFormValues({ ...formValues, applied_via: value });
           }}
           placeholder="Applied via"
         ></TextInput>
 
         <Picker
           style={styles.container}
-          selectedValue={updatedFormValues.status}
+          selectedValue={formValues.status}
           onValueChange={(itemValue, itemPosition) => {
-            setUpdatedFormValues({ ...updatedFormValues, status: itemValue });
+            setFormValues({ ...formValues, status: itemValue });
           }}
         >
           <Picker.Item key={"Stage"} label={"Stage"} value={0} />
-          {statusOptions}
+          {StatusOptions}
         </Picker>
 
         <Text></Text>
@@ -138,8 +102,8 @@ export const FormWithSubmit = ({ jobIDInput, navigation }) => {
           minimumTrackTintColor={Colors.orange}
           maximumTrackTintColor={Colors.grey}
           onValueChange={(value) => {
-            setUpdatedFormValues({
-              ...updatedFormValues,
+            setFormValues({
+              ...formValues,
               interest_level: value,
             });
             setInterestLevel(value);
@@ -150,7 +114,9 @@ export const FormWithSubmit = ({ jobIDInput, navigation }) => {
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues)}
+          onPress={() =>
+            onSubmit(jobID, formValues, navigation, setFormValues)
+          }
           underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>

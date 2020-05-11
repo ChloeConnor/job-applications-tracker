@@ -9,12 +9,12 @@ export function getApplications(keys, setApplications) {
 }
 
 export function deleteApplication(jobID) {
-  console.log("delete: ", jobID);
+  console.log("delete:", jobID);
   AsyncStorage.removeItem(jobID);
   //doesn't remove from array just removes value
 }
 
 export function getOneApplication(jobID, setApp) {
-  console.log("getting application: ", jobID);
-  AsyncStorage.getItem(jobID.then((app) => setApp(app)));
+  console.log("getting application:", jobID);
+  AsyncStorage.getItem(jobID).then(app => setApp(JSON.parse(app)));
 }

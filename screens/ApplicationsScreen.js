@@ -12,7 +12,9 @@ import {
 } from "../storage/storageFunctions";
 
 function moreDetails(jobID, navigation) {
-  navigation.navigate("Details");
+  navigation.navigate("Details", {
+    jobIDInput: jobID
+  });
 }
 
 function getValue(application, field) {
