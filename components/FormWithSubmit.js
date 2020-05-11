@@ -30,7 +30,6 @@ function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
 export const FormWithSubmit = ({ navigation }) => {
   const [formValues, setFormValues] = useState({});
   const [jobID, setJobID] = useState("");
-  const [interestLevel, setInterestLevel] = useState(0);
 
   return (
     <ScrollView
@@ -94,7 +93,7 @@ export const FormWithSubmit = ({ navigation }) => {
         </Picker>
 
         <Text></Text>
-        <Text style={styles.text}>Interest level: {interestLevel}</Text>
+        <Text style={styles.text}>Interest level: {formValues["interest_level"] || 0}</Text>
         <Slider
           style={{ width: 200, height: 40 }}
           minimumValue={0}
@@ -106,7 +105,6 @@ export const FormWithSubmit = ({ navigation }) => {
               ...formValues,
               interest_level: value,
             });
-            setInterestLevel(value);
           }}
           step={1}
         />

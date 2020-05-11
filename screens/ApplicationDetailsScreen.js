@@ -5,18 +5,16 @@ import {
   View,
   TouchableHighlight,
   Picker,
-  Alert,
   Slider,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
-import { TextInput } from "react-native";
-import { getOneApplication } from "../storage/storageFunctions";
+import {
+  getOneApplication,
+  updateApplication,
+} from "../storage/storageFunctions";
 import { StatusOptions } from "../components/StatusOptions";
 
-function onSubmit() {
-  //
-}
 
 export default function ApplicationDetailsScreen({ route, navigation }) {
   const { jobIDInput } = route.params;
@@ -52,7 +50,7 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
         <Text style={styles.header}>Stage & Interest</Text>
         <Picker
           style={styles.textField}
-          selectedValue={application.status}
+          selectedValue={updatedApplication["status"] || stage}
           onValueChange={(itemValue, itemPosition) => {
             setUpdatedApplication({ ...updatedApplication, status: itemValue });
           }}
@@ -62,7 +60,9 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
         </Picker>
 
         <Text></Text>
-        <Text style={styles.textField}>Interest level: {interestLevel}</Text>
+        <Text style={styles.textField}>
+          Interest level: {updatedApplication["interest_level"] || application["interest_level"]}
+        </Text>
         <Slider
           style={styles.slider}
           minimumValue={0}
@@ -74,7 +74,6 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
               ...updatedApplication,
               interest_level: value,
             });
-            setInterestLevel(value);
           }}
           step={1}
           value={interestLevel}
@@ -83,9 +82,7 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() =>
-            onSubmit(jobID, updatedApplication, setUpdatedApplication)
-          }
+          onPress={() => updateApplication(jobIDInput, updatedApplication)}
           underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>

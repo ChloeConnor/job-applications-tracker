@@ -99,7 +99,7 @@ export default function ApplicationsScreen({ navigation }) {
     getApplications(keys, setApplications);
   }, []);
 
-  // hack becayse useEffect doesn't work
+  // hack because useEffect doesn't work
   function check() {
     getKeys(setKeys);
     getApplications(keys, setApplications);
