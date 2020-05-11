@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { SplashScreen } from "expo";
 import * as Font from "expo-font";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabNavigator from "./navigation/BottomTabNavigator";
@@ -36,10 +36,11 @@ export default function App(props) {
         // Load fonts
         await Font.loadAsync({
           Ionicons: Ionicons,
+          MaterialIcons: MaterialIcons,
           "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf"),
         });
       } catch (e) {
-        // We might want to provide this error information to an error reporting service
+        // We might want to provide this error information to an error xreporting service
         console.warn(e);
       } finally {
         setLoadingComplete(true);
