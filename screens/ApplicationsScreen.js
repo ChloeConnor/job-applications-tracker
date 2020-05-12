@@ -110,10 +110,6 @@ export default function ApplicationsScreen({ navigation }) {
     >
       {ApplicationCards(applications, navigation)}
       <Text></Text>
-      <TouchableHighlight style={styles.updateButton} underlayColor="#dbdbdb">
-        <Text style={styles.buttonText}>UPDATE</Text>
-      </TouchableHighlight>
-      <Text></Text>
     </ScrollView>
   );
 }
