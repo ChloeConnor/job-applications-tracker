@@ -17,7 +17,7 @@ import { StatusOptions } from "../components/StatusOptions";
 import { Icon } from "react-native-elements";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
+function onSubmit(jobID, updatedFormValues, navigation) {
   if (jobID != undefined && jobID != "") {
     console.log("adding application:", JSON.stringify(updatedFormValues));
     AsyncStorage.setItem(jobID, JSON.stringify(updatedFormValues));
@@ -31,14 +31,18 @@ function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
 const InterviewDatePicker = ({ setFormValues, formValues, show }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  const date = (formValues || {})["interview_date"]["nativeEvent"]["timestamp"];
+  console.log(formValues);
+  var date =
+    formValues != null && formValues["interview_date"]
+      ? formValues["interview_date"]["nativeEvent"]["timestamp"]
+      : new Date();
 
   if (show) {
     return (
       <View>
         <Text style={styles.text}>
           Interview date:
-          {(date || new Date()).toString()}
+          {date.toString()}
         </Text>
         <Text></Text>
         <View>
@@ -191,7 +195,7 @@ export const FormWithSubmit = ({ navigation }) => {
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => onSubmit(jobID, formValues, navigation, setFormValues)}
+          onPress={() => onSubmit(jobID, formValues, navigation)}
           underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>
