@@ -20,7 +20,7 @@ function moreDetails(jobID, navigation) {
 function getValue(application, field) {
   return (application.filter(([key, value]) => key == field)[0] || [
     field,
-    "Unknown",
+    "TBC",
   ])[1];
 }
 
@@ -55,7 +55,6 @@ const Details = ({ jobID, navigation }) => (
 );
 
 function ApplicationCards(applications, navigation) {
-  console.log("applications", applications);
 
   if (
     applications != undefined &&
@@ -69,6 +68,7 @@ function ApplicationCards(applications, navigation) {
       const company = app.filter(([key, value]) => key == "company")[0][1];
       const role = getValue(app, "role");
       const stage = statusDict[getValue(app, "status")];
+      const date = getValue(app, "interview_date");
 
       return (
         <Card
@@ -79,6 +79,7 @@ function ApplicationCards(applications, navigation) {
         >
           <Text style={styles.optionText}>Role: {role}</Text>
           <Text style={styles.optionText}>Stage: {stage}</Text>
+          <Text style={styles.optionText}>Next interview: {date}</Text>
           <Text></Text>
           <View styles={styles.buttonContainer}>
             <Details jobID={jobID} navigation={navigation}></Details>
@@ -96,14 +97,11 @@ export default function ApplicationsScreen({ navigation }) {
 
   useEffect(() => {
     getKeys(setKeys);
-    getApplications(keys, setApplications);
   }, []);
 
-  // hack because useEffect doesn't work
-  function check() {
-    getKeys(setKeys);
+  useEffect(() => {
     getApplications(keys, setApplications);
-  }
+  }, [keys]);
 
   return (
     <ScrollView
@@ -112,11 +110,7 @@ export default function ApplicationsScreen({ navigation }) {
     >
       {ApplicationCards(applications, navigation)}
       <Text></Text>
-      <TouchableHighlight
-        style={styles.updateButton}
-        onPress={check}
-        underlayColor="#dbdbdb"
-      >
+      <TouchableHighlight style={styles.updateButton} underlayColor="#dbdbdb">
         <Text style={styles.buttonText}>UPDATE</Text>
       </TouchableHighlight>
       <Text></Text>
