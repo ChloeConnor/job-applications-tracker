@@ -14,6 +14,7 @@ import {
   updateApplication,
 } from "../storage/storageFunctions";
 import { StatusOptions } from "../components/StatusOptions";
+import { InterviewDatePicker } from "../components/DateTimePicker";
 
 export default function ApplicationDetailsScreen({ route, navigation }) {
   const { jobIDInput } = route.params;
@@ -23,6 +24,10 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
   useEffect(() => {
     getOneApplication(jobIDInput, setApplication);
   }, [jobIDInput]);
+
+  useEffect(() => {
+    setUpdatedApplication(application);
+  }, [application]);
 
   const stage = application["status"];
   const interestLevel = application["interest_level"];
@@ -63,7 +68,11 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
           {updatedApplication["interview_date"] ||
             application["interview_date"]}
         </Text>
-        <Text></Text> 
+        <InterviewDatePicker
+          setFormValues={setUpdatedApplication}
+          formValues={updatedApplication}
+        ></InterviewDatePicker>
+        <Text></Text>
         <Text style={styles.textField}>
           Interest level:{" "}
           {updatedApplication["interest_level"] ||

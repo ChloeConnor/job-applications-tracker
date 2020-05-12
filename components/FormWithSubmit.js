@@ -30,17 +30,6 @@ function onSubmit(jobID, updatedFormValues, navigation) {
 export const FormWithSubmit = ({ navigation }) => {
   const [formValues, setFormValues] = useState({});
   const [jobID, setJobID] = useState("");
-  const [showInterviewDate, setShowInterviewDate] = useState(false);
-
-  useEffect(() => {
-    if (
-      ["phone_interview", "second_interview", "final_interview"].includes(
-        formValues["status"]
-      )
-    ) {
-      setShowInterviewDate(true);
-    }
-  }, [formValues]);
 
   return (
     <ScrollView
@@ -117,7 +106,6 @@ export const FormWithSubmit = ({ navigation }) => {
 
         <Text></Text>
         <InterviewDatePicker
-          show={showInterviewDate}
           setFormValues={setFormValues}
           formValues={formValues}
         ></InterviewDatePicker>

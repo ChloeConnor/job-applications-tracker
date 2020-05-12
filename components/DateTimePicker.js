@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-} from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import Colors from "../constants/Colors";
 import DateTimePicker from "@react-native-community/datetimepicker";
 
-export const InterviewDatePicker = ({ setFormValues, formValues, show }) => {
+export const InterviewDatePicker = ({ setFormValues, formValues }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
 
   const [interviewDate, setInterviewDate] = useState(new Date());
   const [interviewTime, setInterviewTime] = useState(new Date());
+
+  const [showInterviewDate, setShowInterviewDate] = useState(false);
+
+  useEffect(() => {
+    if (
+      ["phone_interview", "second_interview", "final_interview"].includes(
+        formValues["status"]
+      )
+    ) {
+      setShowInterviewDate(true);
+    }
+  }, [formValues]);
 
   var date =
     formValues != null && interviewDate & interviewTime
@@ -24,9 +31,7 @@ export const InterviewDatePicker = ({ setFormValues, formValues, show }) => {
     setFormValues({ ...formValues, interview_date: date });
   }, [interviewDate, interviewTime]);
 
-  console.log(formValues);
-
-  if (show) {
+  if (showInterviewDate) {
     return (
       <View>
         <Text style={styles.text}>Interview date:</Text>
