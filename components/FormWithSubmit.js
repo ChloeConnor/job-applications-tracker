@@ -7,17 +7,16 @@ import {
   Picker,
   Alert,
   Slider,
-  Button,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Colors from "../constants/Colors";
 import { TextInput } from "react-native";
 import { AsyncStorage } from "react-native";
 import { StatusOptions } from "../components/StatusOptions";
+import { InterviewDatePicker } from "../components/DateTimePicker";
 import { Icon } from "react-native-elements";
-import DateTimePicker from "@react-native-community/datetimepicker";
 
-function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
+function onSubmit(jobID, updatedFormValues, navigation) {
   if (jobID != undefined && jobID != "") {
     console.log("adding application:", JSON.stringify(updatedFormValues));
     AsyncStorage.setItem(jobID, JSON.stringify(updatedFormValues));
@@ -28,64 +27,9 @@ function onSubmit(jobID, updatedFormValues, navigation, setUpdatedFormValues) {
   }
 }
 
-const InterviewDatePicker = ({ setFormValues, formValues, show }) => {
-  const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const date = (formValues || {})["interview_date"]["nativeEvent"]["timestamp"];
-
-  if (show) {
-    return (
-      <View>
-        <Text style={styles.text}>
-          Interview date:
-          {(date || new Date()).toString()}
-        </Text>
-        <Text></Text>
-        <View>
-          <Button
-            color={Colors.orange}
-            onPress={() => setShowDatePicker(!showDatePicker)}
-            title="Set interview date"
-          />
-        </View>
-        {/* <View>
-        <Button onPress={showTimepicker} title="Show time picker!" />
-      </View> */}
-        {showDatePicker && (
-          <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={0}
-            value={new Date()}
-            mode={"date"}
-            is24Hour={true}
-            display="default"
-            onChange={(value) => {
-              setFormValues({ ...formValues, interview_date: value });
-              setShowDatePicker(false);
-            }}
-          />
-        )}
-      </View>
-    );
-  } else {
-    return <Text style={styles.text}>No interview to schedule</Text>;
-  }
-};
-
 export const FormWithSubmit = ({ navigation }) => {
   const [formValues, setFormValues] = useState({});
   const [jobID, setJobID] = useState("");
-  const [showInterviewDate, setShowInterviewDate] = useState(false);
-
-  useEffect(() => {
-    if (
-      ["phone_interview", "second_interview", "final_interview"].includes(
-        formValues["status"]
-      )
-    ) {
-      setShowInterviewDate(true);
-    }
-  }, [formValues]);
 
   return (
     <ScrollView
@@ -162,7 +106,6 @@ export const FormWithSubmit = ({ navigation }) => {
 
         <Text></Text>
         <InterviewDatePicker
-          show={showInterviewDate}
           setFormValues={setFormValues}
           formValues={formValues}
         ></InterviewDatePicker>
@@ -191,7 +134,7 @@ export const FormWithSubmit = ({ navigation }) => {
         <Text></Text>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => onSubmit(jobID, formValues, navigation, setFormValues)}
+          onPress={() => onSubmit(jobID, formValues, navigation)}
           underlayColor="#dbdbdb"
         >
           <Text style={styles.buttonText}>Save</Text>
