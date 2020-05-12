@@ -30,31 +30,36 @@ function onSubmit(jobID, updatedFormValues, navigation) {
 
 const InterviewDatePicker = ({ setFormValues, formValues, show }) => {
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
+  const [interviewDate, setInterviewDate] = useState(new Date());
+  const [interviewTime, setInterviewTime] = useState(new Date());
+
+  var date =
+    formValues != null && interviewDate & interviewTime
+      ? new Date(interviewDate + (interviewTime - new Date()))
+      : new Date();
+
+  useEffect(() => {
+    setFormValues({ ...formValues, interview_date: date });
+  }, [interviewDate, interviewTime]);
 
   console.log(formValues);
-  var date =
-    formValues != null && formValues["interview_date"]
-      ? formValues["interview_date"]["nativeEvent"]["timestamp"]
-      : new Date();
 
   if (show) {
     return (
       <View>
-        <Text style={styles.text}>
-          Interview date:
-          {date.toString()}
-        </Text>
+        <Text style={styles.text}>Interview date:</Text>
+        <Text style={styles.text}>{date.toString()}</Text>
         <Text></Text>
         <View>
           <Button
             color={Colors.orange}
-            onPress={() => setShowDatePicker(!showDatePicker)}
+            onPress={() => setShowDatePicker(true)}
             title="Set interview date"
           />
         </View>
-        {/* <View>
-        <Button onPress={showTimepicker} title="Show time picker!" />
-      </View> */}
+
         {showDatePicker && (
           <DateTimePicker
             testID="dateTimePicker"
@@ -63,9 +68,25 @@ const InterviewDatePicker = ({ setFormValues, formValues, show }) => {
             mode={"date"}
             is24Hour={true}
             display="default"
-            onChange={(value) => {
-              setFormValues({ ...formValues, interview_date: value });
+            onChange={(event, selectedDate) => {
+              setInterviewDate(selectedDate.getTime());
+              setShowTimePicker(true);
               setShowDatePicker(false);
+            }}
+          />
+        )}
+
+        {showTimePicker && (
+          <DateTimePicker
+            testID="timePicker"
+            timeZoneOffsetInMinutes={0}
+            value={new Date()}
+            mode={"time"}
+            is24Hour={true}
+            display="default"
+            onChange={(event, selectedTime) => {
+              setInterviewTime(selectedTime.getTime());
+              setShowTimePicker(false);
             }}
           />
         )}

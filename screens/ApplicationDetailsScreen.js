@@ -15,7 +15,6 @@ import {
 } from "../storage/storageFunctions";
 import { StatusOptions } from "../components/StatusOptions";
 
-
 export default function ApplicationDetailsScreen({ route, navigation }) {
   const { jobIDInput } = route.params;
   const [application, setApplication] = useState("");
@@ -59,9 +58,16 @@ export default function ApplicationDetailsScreen({ route, navigation }) {
           {StatusOptions}
         </Picker>
 
-        <Text></Text>
         <Text style={styles.textField}>
-          Interest level: {updatedApplication["interest_level"] || application["interest_level"]}
+          Date:{" "}
+          {updatedApplication["interview_date"] ||
+            application["interview_date"]}
+        </Text>
+        <Text></Text> 
+        <Text style={styles.textField}>
+          Interest level:{" "}
+          {updatedApplication["interest_level"] ||
+            application["interest_level"]}
         </Text>
         <Slider
           style={styles.slider}
